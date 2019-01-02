@@ -1,0 +1,354 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="zh-CN" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="zh-CN" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Comparing anomaly detection algorithms for outlier detection on toy datasets &mdash; project02 v1.0.0 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/gallery.css" type="text/css" />
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" /> 
+
+  
+  <script src="../_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../index.html" class="icon icon-home"> project02
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <!-- Local TOC -->
+              <div class="local-toc"><ul>
+<li><a class="reference internal" href="#">Comparing anomaly detection algorithms for outlier detection on toy datasets</a></li>
+</ul>
+</div>
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">project02</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../index.html">Docs</a> &raquo;</li>
+        
+      <li>Comparing anomaly detection algorithms for outlier detection on toy datasets</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="../_sources/auto_examples/plot_anomaly_comparison.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="sphx-glr-download-link-note admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">Click <a class="reference internal" href="#sphx-glr-download-auto-examples-plot-anomaly-comparison-py"><span class="std std-ref">here</span></a> to download the full example code</p>
+</div>
+<div class="sphx-glr-example-title section" id="comparing-anomaly-detection-algorithms-for-outlier-detection-on-toy-datasets">
+<span id="sphx-glr-auto-examples-plot-anomaly-comparison-py"></span><h1>Comparing anomaly detection algorithms for outlier detection on toy datasets<a class="headerlink" href="#comparing-anomaly-detection-algorithms-for-outlier-detection-on-toy-datasets" title="Permalink to this headline">¶</a></h1>
+<p>This example shows characteristics of different anomaly detection algorithms
+on 2D datasets. Datasets contain one or two modes (regions of high density)
+to illustrate the ability of algorithms to cope with multimodal data.</p>
+<p>For each dataset, 15% of samples are generated as random uniform noise. This
+proportion is the value given to the nu parameter of the OneClassSVM and the
+contamination parameter of the other outlier detection algorithms.
+Decision boundaries between inliers and outliers are displayed in black
+except for Local Outlier Factor (LOF) as it has no predict method to be applied
+on new data when it is used for outlier detection.</p>
+<p>The <code class="xref py py-class docutils literal notranslate"><span class="pre">sklearn.svm.OneClassSVM</span></code> is known to be sensitive to outliers and
+thus does not perform very well for outlier detection. This estimator is best
+suited for novelty detection when the training set is not contaminated by
+outliers. That said, outlier detection in high-dimension, or without any
+assumptions on the distribution of the inlying data is very challenging, and a
+One-class SVM might give useful results in these situations depending on the
+value of its hyperparameters.</p>
+<p><code class="xref py py-class docutils literal notranslate"><span class="pre">sklearn.covariance.EllipticEnvelope</span></code> assumes the data is Gaussian and
+learns an ellipse. It thus degrades when the data is not unimodal. Notice
+however that this estimator is robust to outliers.</p>
+<p><code class="xref py py-class docutils literal notranslate"><span class="pre">sklearn.ensemble.IsolationForest</span></code> and
+<code class="xref py py-class docutils literal notranslate"><span class="pre">sklearn.neighbors.LocalOutlierFactor</span></code> seem to perform reasonably well
+for multi-modal data sets. The advantage of
+<code class="xref py py-class docutils literal notranslate"><span class="pre">sklearn.neighbors.LocalOutlierFactor</span></code> over the other estimators is
+shown for the third data set, where the two modes have different densities.
+This advantage is explained by the local aspect of LOF, meaning that it only
+compares the score of abnormality of one sample with the scores of its
+neighbors.</p>
+<p>Finally, for the last data set, it is hard to say that one sample is more
+abnormal than another sample as they are uniformly distributed in a
+hypercube. Except for the <code class="xref py py-class docutils literal notranslate"><span class="pre">sklearn.svm.OneClassSVM</span></code> which overfits a
+little, all estimators present decent solutions for this situation. In such a
+case, it would be wise to look more closely at the scores of abnormality of
+the samples as a good estimator should assign similar scores to all the
+samples.</p>
+<p>While these examples give some intuition about the algorithms, this
+intuition might not apply to very high dimensional data.</p>
+<p>Finally, note that parameters of the models have been here handpicked but
+that in practice they need to be adjusted. In the absence of labelled data,
+the problem is completely unsupervised so model selection can be a challenge.</p>
+<img alt="../_images/sphx_glr_plot_anomaly_comparison_001.png" class="sphx-glr-single-img" src="../_images/sphx_glr_plot_anomaly_comparison_001.png" />
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Author: Alexandre Gramfort &lt;alexandre.gramfort@inria.fr&gt;</span>
+<span class="c1">#         Albert Thomas &lt;albert.thomas@telecom-paristech.fr&gt;</span>
+<span class="c1"># License: BSD 3 clause</span>
+
+<span class="kn">import</span> <span class="nn">time</span>
+
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="kn">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">matplotlib</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="kn">as</span> <span class="nn">plt</span>
+
+<span class="kn">from</span> <span class="nn">sklearn</span> <span class="kn">import</span> <span class="n">svm</span>
+<span class="kn">from</span> <span class="nn">sklearn.datasets</span> <span class="kn">import</span> <span class="n">make_moons</span><span class="p">,</span> <span class="n">make_blobs</span>
+<span class="kn">from</span> <span class="nn">sklearn.covariance</span> <span class="kn">import</span> <span class="n">EllipticEnvelope</span>
+<span class="kn">from</span> <span class="nn">sklearn.ensemble</span> <span class="kn">import</span> <span class="n">IsolationForest</span>
+<span class="kn">from</span> <span class="nn">sklearn.neighbors</span> <span class="kn">import</span> <span class="n">LocalOutlierFactor</span>
+
+<span class="k">print</span><span class="p">(</span><span class="vm">__doc__</span><span class="p">)</span>
+
+<span class="n">matplotlib</span><span class="o">.</span><span class="n">rcParams</span><span class="p">[</span><span class="s1">&#39;contour.negative_linestyle&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;solid&#39;</span>
+
+<span class="c1"># Example settings</span>
+<span class="n">n_samples</span> <span class="o">=</span> <span class="mi">300</span>
+<span class="n">outliers_fraction</span> <span class="o">=</span> <span class="mf">0.15</span>
+<span class="n">n_outliers</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">outliers_fraction</span> <span class="o">*</span> <span class="n">n_samples</span><span class="p">)</span>
+<span class="n">n_inliers</span> <span class="o">=</span> <span class="n">n_samples</span> <span class="o">-</span> <span class="n">n_outliers</span>
+
+<span class="c1"># define outlier/anomaly detection methods to be compared</span>
+<span class="n">anomaly_algorithms</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="p">(</span><span class="s2">&quot;Robust covariance&quot;</span><span class="p">,</span> <span class="n">EllipticEnvelope</span><span class="p">(</span><span class="n">contamination</span><span class="o">=</span><span class="n">outliers_fraction</span><span class="p">)),</span>
+    <span class="p">(</span><span class="s2">&quot;One-Class SVM&quot;</span><span class="p">,</span> <span class="n">svm</span><span class="o">.</span><span class="n">OneClassSVM</span><span class="p">(</span><span class="n">nu</span><span class="o">=</span><span class="n">outliers_fraction</span><span class="p">,</span> <span class="n">kernel</span><span class="o">=</span><span class="s2">&quot;rbf&quot;</span><span class="p">,</span>
+                                      <span class="n">gamma</span><span class="o">=</span><span class="mf">0.1</span><span class="p">)),</span>
+    <span class="p">(</span><span class="s2">&quot;Isolation Forest&quot;</span><span class="p">,</span> <span class="n">IsolationForest</span><span class="p">(</span><span class="n">behaviour</span><span class="o">=</span><span class="s1">&#39;new&#39;</span><span class="p">,</span>
+                                         <span class="n">contamination</span><span class="o">=</span><span class="n">outliers_fraction</span><span class="p">,</span>
+                                         <span class="n">random_state</span><span class="o">=</span><span class="mi">42</span><span class="p">)),</span>
+    <span class="p">(</span><span class="s2">&quot;Local Outlier Factor&quot;</span><span class="p">,</span> <span class="n">LocalOutlierFactor</span><span class="p">(</span>
+        <span class="n">n_neighbors</span><span class="o">=</span><span class="mi">35</span><span class="p">,</span> <span class="n">contamination</span><span class="o">=</span><span class="n">outliers_fraction</span><span class="p">))]</span>
+
+<span class="c1"># Define datasets</span>
+<span class="n">blobs_params</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="n">random_state</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">n_samples</span><span class="o">=</span><span class="n">n_inliers</span><span class="p">,</span> <span class="n">n_features</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+<span class="n">datasets</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="n">make_blobs</span><span class="p">(</span><span class="n">centers</span><span class="o">=</span><span class="p">[[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">]],</span> <span class="n">cluster_std</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span>
+               <span class="o">**</span><span class="n">blobs_params</span><span class="p">)[</span><span class="mi">0</span><span class="p">],</span>
+    <span class="n">make_blobs</span><span class="p">(</span><span class="n">centers</span><span class="o">=</span><span class="p">[[</span><span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">],</span> <span class="p">[</span><span class="o">-</span><span class="mi">2</span><span class="p">,</span> <span class="o">-</span><span class="mi">2</span><span class="p">]],</span> <span class="n">cluster_std</span><span class="o">=</span><span class="p">[</span><span class="mf">0.5</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">],</span>
+               <span class="o">**</span><span class="n">blobs_params</span><span class="p">)[</span><span class="mi">0</span><span class="p">],</span>
+    <span class="n">make_blobs</span><span class="p">(</span><span class="n">centers</span><span class="o">=</span><span class="p">[[</span><span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">],</span> <span class="p">[</span><span class="o">-</span><span class="mi">2</span><span class="p">,</span> <span class="o">-</span><span class="mi">2</span><span class="p">]],</span> <span class="n">cluster_std</span><span class="o">=</span><span class="p">[</span><span class="mf">1.5</span><span class="p">,</span> <span class="o">.</span><span class="mi">3</span><span class="p">],</span>
+               <span class="o">**</span><span class="n">blobs_params</span><span class="p">)[</span><span class="mi">0</span><span class="p">],</span>
+    <span class="mf">4.</span> <span class="o">*</span> <span class="p">(</span><span class="n">make_moons</span><span class="p">(</span><span class="n">n_samples</span><span class="o">=</span><span class="n">n_samples</span><span class="p">,</span> <span class="n">noise</span><span class="o">=.</span><span class="mo">05</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="mi">0</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span> <span class="o">-</span>
+          <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mf">0.5</span><span class="p">,</span> <span class="mf">0.25</span><span class="p">])),</span>
+    <span class="mf">14.</span> <span class="o">*</span> <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">RandomState</span><span class="p">(</span><span class="mi">42</span><span class="p">)</span><span class="o">.</span><span class="n">rand</span><span class="p">(</span><span class="n">n_samples</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span> <span class="o">-</span> <span class="mf">0.5</span><span class="p">)]</span>
+
+<span class="c1"># Compare given classifiers under given settings</span>
+<span class="n">xx</span><span class="p">,</span> <span class="n">yy</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">meshgrid</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="o">-</span><span class="mi">7</span><span class="p">,</span> <span class="mi">7</span><span class="p">,</span> <span class="mi">150</span><span class="p">),</span>
+                     <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="o">-</span><span class="mi">7</span><span class="p">,</span> <span class="mi">7</span><span class="p">,</span> <span class="mi">150</span><span class="p">))</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">anomaly_algorithms</span><span class="p">)</span> <span class="o">*</span> <span class="mi">2</span> <span class="o">+</span> <span class="mi">3</span><span class="p">,</span> <span class="mf">12.5</span><span class="p">))</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">subplots_adjust</span><span class="p">(</span><span class="n">left</span><span class="o">=.</span><span class="mo">02</span><span class="p">,</span> <span class="n">right</span><span class="o">=.</span><span class="mi">98</span><span class="p">,</span> <span class="n">bottom</span><span class="o">=.</span><span class="mo">001</span><span class="p">,</span> <span class="n">top</span><span class="o">=.</span><span class="mi">96</span><span class="p">,</span> <span class="n">wspace</span><span class="o">=.</span><span class="mo">05</span><span class="p">,</span>
+                    <span class="n">hspace</span><span class="o">=.</span><span class="mo">01</span><span class="p">)</span>
+
+<span class="n">plot_num</span> <span class="o">=</span> <span class="mi">1</span>
+<span class="n">rng</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">RandomState</span><span class="p">(</span><span class="mi">42</span><span class="p">)</span>
+
+<span class="k">for</span> <span class="n">i_dataset</span><span class="p">,</span> <span class="n">X</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">datasets</span><span class="p">):</span>
+    <span class="c1"># Add outliers</span>
+    <span class="n">X</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">([</span><span class="n">X</span><span class="p">,</span> <span class="n">rng</span><span class="o">.</span><span class="n">uniform</span><span class="p">(</span><span class="n">low</span><span class="o">=-</span><span class="mi">6</span><span class="p">,</span> <span class="n">high</span><span class="o">=</span><span class="mi">6</span><span class="p">,</span>
+                       <span class="n">size</span><span class="o">=</span><span class="p">(</span><span class="n">n_outliers</span><span class="p">,</span> <span class="mi">2</span><span class="p">))],</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+
+    <span class="k">for</span> <span class="n">name</span><span class="p">,</span> <span class="n">algorithm</span> <span class="ow">in</span> <span class="n">anomaly_algorithms</span><span class="p">:</span>
+        <span class="n">t0</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
+        <span class="n">algorithm</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X</span><span class="p">)</span>
+        <span class="n">t1</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">subplot</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">datasets</span><span class="p">),</span> <span class="nb">len</span><span class="p">(</span><span class="n">anomaly_algorithms</span><span class="p">),</span> <span class="n">plot_num</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">i_dataset</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="mi">18</span><span class="p">)</span>
+
+        <span class="c1"># fit the data and tag outliers</span>
+        <span class="k">if</span> <span class="n">name</span> <span class="o">==</span> <span class="s2">&quot;Local Outlier Factor&quot;</span><span class="p">:</span>
+            <span class="n">y_pred</span> <span class="o">=</span> <span class="n">algorithm</span><span class="o">.</span><span class="n">fit_predict</span><span class="p">(</span><span class="n">X</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">y_pred</span> <span class="o">=</span> <span class="n">algorithm</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X</span><span class="p">)</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">X</span><span class="p">)</span>
+
+        <span class="c1"># plot the levels lines and the points</span>
+        <span class="k">if</span> <span class="n">name</span> <span class="o">!=</span> <span class="s2">&quot;Local Outlier Factor&quot;</span><span class="p">:</span>  <span class="c1"># LOF does not implement predict</span>
+            <span class="n">Z</span> <span class="o">=</span> <span class="n">algorithm</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">c_</span><span class="p">[</span><span class="n">xx</span><span class="o">.</span><span class="n">ravel</span><span class="p">(),</span> <span class="n">yy</span><span class="o">.</span><span class="n">ravel</span><span class="p">()])</span>
+            <span class="n">Z</span> <span class="o">=</span> <span class="n">Z</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">xx</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
+            <span class="n">plt</span><span class="o">.</span><span class="n">contour</span><span class="p">(</span><span class="n">xx</span><span class="p">,</span> <span class="n">yy</span><span class="p">,</span> <span class="n">Z</span><span class="p">,</span> <span class="n">levels</span><span class="o">=</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">linewidths</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">colors</span><span class="o">=</span><span class="s1">&#39;black&#39;</span><span class="p">)</span>
+
+        <span class="n">colors</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="s1">&#39;#377eb8&#39;</span><span class="p">,</span> <span class="s1">&#39;#ff7f00&#39;</span><span class="p">])</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">X</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">X</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">],</span> <span class="n">s</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="n">colors</span><span class="p">[(</span><span class="n">y_pred</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span> <span class="o">//</span> <span class="mi">2</span><span class="p">])</span>
+
+        <span class="n">plt</span><span class="o">.</span><span class="n">xlim</span><span class="p">(</span><span class="o">-</span><span class="mi">7</span><span class="p">,</span> <span class="mi">7</span><span class="p">)</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">ylim</span><span class="p">(</span><span class="o">-</span><span class="mi">7</span><span class="p">,</span> <span class="mi">7</span><span class="p">)</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">xticks</span><span class="p">(())</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">yticks</span><span class="p">(())</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">text</span><span class="p">(</span><span class="o">.</span><span class="mi">99</span><span class="p">,</span> <span class="o">.</span><span class="mo">01</span><span class="p">,</span> <span class="p">(</span><span class="s1">&#39;</span><span class="si">%.2f</span><span class="s1">s&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="n">t1</span> <span class="o">-</span> <span class="n">t0</span><span class="p">))</span><span class="o">.</span><span class="n">lstrip</span><span class="p">(</span><span class="s1">&#39;0&#39;</span><span class="p">),</span>
+                 <span class="n">transform</span><span class="o">=</span><span class="n">plt</span><span class="o">.</span><span class="n">gca</span><span class="p">()</span><span class="o">.</span><span class="n">transAxes</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="mi">15</span><span class="p">,</span>
+                 <span class="n">horizontalalignment</span><span class="o">=</span><span class="s1">&#39;right&#39;</span><span class="p">)</span>
+        <span class="n">plot_num</span> <span class="o">+=</span> <span class="mi">1</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+<p><strong>Total running time of the script:</strong> ( 0 minutes  4.372 seconds)</p>
+<div class="sphx-glr-footer class sphx-glr-footer-example docutils container" id="sphx-glr-download-auto-examples-plot-anomaly-comparison-py">
+<div class="sphx-glr-download docutils container">
+<a class="reference download internal" download="" href="../_downloads/098ebccdc5b72168d264e0c5059e7798/plot_anomaly_comparison.py"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Python</span> <span class="pre">source</span> <span class="pre">code:</span> <span class="pre">plot_anomaly_comparison.py</span></code></a></div>
+<div class="sphx-glr-download docutils container">
+<a class="reference download internal" download="" href="../_downloads/4f93f4dbb46de761913c0854908e843c/plot_anomaly_comparison.ipynb"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Jupyter</span> <span class="pre">notebook:</span> <span class="pre">plot_anomaly_comparison.ipynb</span></code></a></div>
+</div>
+<p class="sphx-glr-signature"><a class="reference external" href="https://sphinx-gallery.readthedocs.io">Gallery generated by Sphinx-Gallery</a></p>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2018, antares
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+        <script type="text/javascript" src="../_static/jquery.js"></script>
+        <script type="text/javascript" src="../_static/underscore.js"></script>
+        <script type="text/javascript" src="../_static/doctools.js"></script>
+        <script async="async" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    
+
+  
+
+  <script type="text/javascript" src="../_static/js/theme.js"></script>
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
